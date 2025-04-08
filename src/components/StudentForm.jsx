@@ -1,50 +1,54 @@
 import React, {useState} from 'react';
 
-function StudentForm() {
-    const [name,setName] = useState('');
-    const [surname, setSurname] = useState('');
-    const [age, setAge] = useState(0);
-    const [className, setClassName] = useState('');
+function StudentForm(props) {
 
-    const [nameError, setNameError] = useState(null);
-    const [ageError, setAgeError] = useState(null);
-
+    const [nameError, setNameError] = useState('');
+    const [ageError, setAgeError] = useState('');
     const [formIsValid, setFormIsValid] = useState(true);
-    const [students,setStudents] = useState([]);
+
+    const  [studentData, setStudentData] = useState({
+        name:"",
+        surname:"",
+        age:0,
+        className:"",
+    });
+
 
     function handleSubmit(e) {
         e.preventDefault();
 
-        const student = {ad:name, soyad:surname, yas:age, sinif:className};
 
-        if (name===null || name.length<=0){
+        if (studentData.name===null || studentData.name.length<=0){
             setNameError('İsim Alanı Boş olamaz');
             setFormIsValid(false);
         }
 
-        if (age <=0){
+        if (studentData.age <=0){
             setAgeError("Yaş Alanı 0 veya daha küçük olamaz.")
             setFormIsValid(false);
         }
 
         if (formIsValid){
             console.log("Log attım")
-            setStudents([...students,student]);
-            setName("")
-            setSurname("")
-            setAge(0)
-            setClassName("")
-        }
-    }
 
+            console.log(props.data);
+            setStudentData({
+                name:"",
+                surname:"",
+                age:0,
+                className: ""
+            })
+        }
+        setFormIsValid(true)
+    }
 
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
                 <label className="form-label">Öğrenci Adı</label>
                 <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={studentData.name}
+                    onChange={(e) => setStudentData({...studentData, name: e.target.value})}
                     type="text" className="form-control"/>
                 {
                     nameError &&
@@ -56,16 +60,16 @@ function StudentForm() {
             <div className="mb-3">
                 <label className="form-label">Öğrenci Soyadı</label>
                 <input
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
+                    value={studentData.surname}
+                    onChange={(e) => setStudentData({...studentData, surname: e.target.value})}
                     type="text" className="form-control"/>
             </div>
 
             <div className="mb-3">
                 <label className="form-label">Öğrenci Yaşı</label>
                 <input
-                    value={age}
-                    onChange={(e) => {setAge(e.target.value)}}
+                    value={studentData.age}
+                    onChange={(e) => {setStudentData({...studentData,age: e.target.value})}}
                     type="number"
                     className="form-control"/>
                 {
@@ -76,8 +80,8 @@ function StudentForm() {
             <div className="mb-3">
                 <label className="form-label">Öğrenci Sınıfı</label>
                 <input
-                    value={className}
-                    onChange={(e) => setClassName(e.target.value)}
+                    value={studentData.className}
+                    onChange={(e) => setStudentData({...studentData,className: e.target.value})}
                     type="text" className="form-control"/>
             </div>
 
@@ -85,5 +89,4 @@ function StudentForm() {
         </form>
     );
 }
-
 export default StudentForm;
